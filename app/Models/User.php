@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Osiset\ShopifyApp\Contracts\ShopModel as ShopModelInterface;
 use Osiset\ShopifyApp\Traits\ShopModel;
 
 class User extends Authenticatable implements ShopModelInterface
 {
-    use HasApiTokens, HasFactory, Notifiable, ShopModel;
+    use Notifiable, ShopModel;
 
     /**
      * The attributes that are mass assignable.
@@ -41,6 +39,5 @@ class User extends Authenticatable implements ShopModelInterface
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
     ];
 }

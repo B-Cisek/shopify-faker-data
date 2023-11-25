@@ -9,6 +9,14 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+window.axios.interceptors.request.use(config => {
+    return window.utils.getSessionToken(window.app).then(token => {
+        config.headers.Authorization = `Bearer ${token}`;
+
+        return config;
+    });
+});
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
