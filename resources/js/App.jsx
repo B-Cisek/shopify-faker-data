@@ -30,9 +30,7 @@ const App = () => {
     return (
         <AppProvider i18n={enTranslation}>
             <Provider config={appBridgeConfig}>
-                <Page>
-                    <ProductCreator/>
-                </Page>
+                <ProductCreator/>
             </Provider>
         </AppProvider>
     )

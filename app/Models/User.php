@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Osiset\ShopifyApp\Contracts\ShopModel as ShopModelInterface;
@@ -40,4 +41,9 @@ class User extends Authenticatable implements ShopModelInterface
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function fakeProducts(): HasMany
+    {
+        return $this->hasMany(FakeProduct::class);
+    }
 }
