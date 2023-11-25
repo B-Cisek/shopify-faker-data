@@ -1,11 +1,14 @@
-import {Provider} from "@shopify/app-bridge-react";
+import {Provider} from "@shopify/app-bridge-react"
 import {useState} from 'react'
+import {AppProvider} from '@shopify/polaris'
+import enTranslation from "@shopify/polaris/locales/en.json"
+import MissingApiKey from "./components/MissingApiKey.jsx";
 
 const App = () => {
     const [appBridgeConfig] = useState(() => {
-        const host = new URLSearchParams(location.search).get('host') || window.__SHOPIFY_HOST
+            const host = new URLSearchParams(location.search).get('host') || window.__SHOPIFY_HOST
 
-        window.__SHOPIFY_HOST = host
+            window.__SHOPIFY_HOST = host
 
             return {
                 host,
@@ -15,10 +18,20 @@ const App = () => {
         }
     )
 
+    if (! appBridgeConfig.apiKey) {
+        return (
+            <AppProvider i18n={enTranslation}>
+                <MissingApiKey />
+            </AppProvider>
+        )
+    }
+
     return (
-        <Provider config={appBridgeConfig}>
-            <div>Hello React</div>
-        </Provider>
+        <AppProvider i18n={enTranslation}>
+            <Provider config={appBridgeConfig}>
+                <div>Hello React</div>
+            </Provider>
+        </AppProvider>
     )
 }
 
