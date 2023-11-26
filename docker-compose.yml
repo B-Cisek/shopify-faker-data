@@ -5,15 +5,15 @@ services:
             - '${HTTP_PORT:-8000}:80'
             - '${SSL_PORT:-443}:443'
         environment:
-            - SSL_PORT=${SSL_PORT:-443}
-            - APP_SERVICE=${APP_SERVICE:-laravel.test}
-            - SERVER_NAME=${SERVER_NAME:-localhost}
+            - 'SSL_PORT=${SSL_PORT:-443}'
+            - 'APP_SERVICE=${APP_SERVICE:-laravel.test}'
+            - 'SERVER_NAME=${SERVER_NAME:-localhost}'
         volumes:
             - 'sail-nginx:/etc/nginx/certs'
             - './nginx/templates:/etc/nginx/templates'
             - './vendor/ryoluo/sail-ssl/nginx/generate-ssl-cert.sh:/docker-entrypoint.d/99-generate-ssl-cert.sh'
         depends_on:
-            - ${APP_SERVICE:-laravel.test}
+            - '${APP_SERVICE:-laravel.test}'
         networks:
             - sail
     laravel.test:
@@ -40,6 +40,7 @@ services:
             - sail
         depends_on:
             - mysql
+            - redis
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -64,6 +65,21 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+    redis:
+        image: 'redis:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
+        volumes:
+            - 'sail-redis:/data'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD
+                - redis-cli
+                - ping
+            retries: 3
+            timeout: 5s
 networks:
     sail:
         driver: bridge
@@ -71,4 +87,6 @@ volumes:
     sail-nginx:
         driver: local
     sail-mysql:
+        driver: local
+    sail-redis:
         driver: local

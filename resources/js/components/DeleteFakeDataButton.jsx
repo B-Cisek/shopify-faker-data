@@ -11,7 +11,7 @@ const DeleteFakeDataButton = () => {
         setLoading(true)
 
         axios.delete('/products')
-            .then(() => setToastMessage('Deleted Fake Data'))
+            .then(() => setToastMessage('Deleting Fake Data'))
             .finally(() => setLoading(false))
     }
 

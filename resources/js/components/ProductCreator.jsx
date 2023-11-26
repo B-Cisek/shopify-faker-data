@@ -17,7 +17,7 @@ const ProductCreator = () => {
         axios.post('/products', options)
             .then(res => {
                 setErrors([])
-                setToastMessage('The Fake Data Has Been Added Successful')
+                setToastMessage('Started Generating Fake Data.')
             })
             .catch(error => {
                 if (error?.response?.status === 422) {
