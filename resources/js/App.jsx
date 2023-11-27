@@ -1,9 +1,9 @@
 import {Provider} from "@shopify/app-bridge-react"
 import {useState} from 'react'
-import {AppProvider, Page} from '@shopify/polaris'
+import {AppProvider} from '@shopify/polaris'
 import enTranslation from "@shopify/polaris/locales/en.json"
 import MissingApiKey from "./components/MissingApiKey"
-import ProductCreator from "./components/ProductCreator";
+import FakeDataCreator from "./components/FakeDataCreator.jsx";
 
 const App = () => {
     const [appBridgeConfig] = useState(() => {
@@ -30,7 +30,7 @@ const App = () => {
     return (
         <AppProvider i18n={enTranslation}>
             <Provider config={appBridgeConfig}>
-                <ProductCreator/>
+                <FakeDataCreator/>
             </Provider>
         </AppProvider>
     )

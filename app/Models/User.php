@@ -46,4 +46,9 @@ class User extends Authenticatable implements ShopModelInterface
     {
         return $this->hasMany(FakeProduct::class);
     }
+
+    public function fakeCustomers(): HasMany
+    {
+        return $this->hasMany(FakeCustomer::class);
+    }
 }

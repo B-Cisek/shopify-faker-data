@@ -1,10 +1,11 @@
 import axios from "axios"
 import {useEffect} from "react"
 import {getSessionToken} from "@shopify/app-bridge/utilities"
-import {useAppBridge} from "@shopify/app-bridge-react";
+import {useAppBridge, useNavigate} from "@shopify/app-bridge-react";
 
 const useAxios = () => {
     const app = useAppBridge()
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -17,7 +18,18 @@ const useAxios = () => {
             });
         });
 
-        return () => axios.interceptors.request.eject(interceptor);
+        const responseInterceptor = axios.interceptors.response.use(res => res, error => {
+            if (error.response.status === 403 && error.response?.data?.forceRedirectUrl) {
+                navigate(error.response.data.forceRedirectUrl)
+            }
+
+            return error;
+        })
+
+        return () => {
+            axios.interceptors.request.eject(interceptor);
+            axios.interceptors.request.eject(responseInterceptor);
+        }
     }, [])
 
     return {axios}
