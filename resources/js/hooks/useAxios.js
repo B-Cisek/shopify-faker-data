@@ -13,6 +13,7 @@ const useAxios = () => {
         const interceptor = axios.interceptors.request.use(config => {
             return getSessionToken(app).then(token => {
                 config.headers.Authorization = `Bearer ${token}`;
+                config.params = {...config.params, host: window.__SHOPIFY_HOST}
 
                 return config;
             });
@@ -23,7 +24,7 @@ const useAxios = () => {
                 navigate(error.response.data.forceRedirectUrl)
             }
 
-            return error;
+            return Promise.reject(error);
         })
 
         return () => {
