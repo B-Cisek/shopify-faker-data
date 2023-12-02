@@ -30,7 +30,7 @@ class FakerController extends Controller
             CreateProducts::dispatch($productsCount, $user);
         }
 
-        if ($customersCount > 0) {
+        if ($customersCount > 0 && $user->plan->price > 0) {
             CreateCustomers::dispatch($customersCount, $user);
         }
 
@@ -42,7 +42,10 @@ class FakerController extends Controller
         $user = $request->user();
 
         DeleteProducts::dispatch($user);
-        DeleteCustomers::dispatch($user);
+
+        if ($user->plan->price > 0) {
+            DeleteCustomers::dispatch($user);
+        }
 
         return $this->responseFactory->noContent();
     }

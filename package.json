@@ -16,6 +16,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@shopify/polaris-icons": "^7.9.0",
         "react": "^18.2.0"
     }
 }
